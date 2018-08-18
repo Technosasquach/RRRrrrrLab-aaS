@@ -71,3 +71,7 @@ typings/
 
 # Serverless directories
 .serverless
+
+# IntelliJ Directories
+.idea/
+RRRrrrrLab-aaS.iml
