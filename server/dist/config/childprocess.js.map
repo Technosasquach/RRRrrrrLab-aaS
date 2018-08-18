@@ -1,0 +1,1 @@
+{"version":3,"file":"childprocess.js","sourceRoot":"","sources":["../../src/config/childprocess.ts"],"names":[],"mappings":";;AAAa,QAAA,oBAAoB,GAAG;IAChC,mBAAmB,EAAE,gBAAgB;IACrC,uBAAuB,EAAE,MAAM;IAC/B,WAAW,EAAE,kBAAkB;IAC/B,UAAU,EAAE,yBAAyB;IACrC,aAAa,EAAE,sBAAsB;IACrC,aAAa,EAAE,MAAM;IACrB,aAAa,EAAE,MAAM;IACrB,iBAAiB,EAAE,SAAS;IAC5B,kBAAkB,EAAE,MAAM;CAC7B,CAAA"}
