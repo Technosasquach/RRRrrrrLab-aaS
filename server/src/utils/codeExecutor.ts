@@ -64,7 +64,12 @@ export class CodeExecutor {
                         exitCode
                     }
                     resolve(output);
-                } else reject(exitCode);
+                } else reject({
+                    err: { 
+                        type: "Code Execution", 
+                        raw: `Error code: ${exitCode}`
+                    }
+                });
             });
         });
     }

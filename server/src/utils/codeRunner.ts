@@ -27,12 +27,16 @@ export class CodeRunner {
         const uuid = processUUID || v1();
         new CodeExecutor(pathTofileName, uuid).exec().then(
             (result: CodeProcess) => {
+                CodeOutputExtractor.parseOutput(result.outPath).then(
+                    (result: ICodeOutput) => {
 
-                return {};
+                    }, 
+                    (err: ICodeOutput) => { 
+                        return { err: { type: "Output Processor", raw: err }};
+                    }
+                )
             }, 
-            (err: string|number) => { 
-                return { err: { type: "Process Failed", raw: "Error code: " + err }};
-            }
+            (err: ICodeOutput) => { return err; }
         )
     };
 
