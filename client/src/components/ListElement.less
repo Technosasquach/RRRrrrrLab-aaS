@@ -1,0 +1,32 @@
+@import "./../../variables.less";
+
+.listElement {
+    width: 100%;
+    border-radius: 2rem;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 20px;
+
+    -webkit-box-shadow: inset 0px -5px 10px -20px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px -5px 10px -20px rgba(0,0,0,0.75);
+    box-shadow: inset 0px -5px 10px -20px rgba(0,0,0,0.75);
+
+    .title {
+        display: block;
+        border-bottom: 1px solid @colour-dark;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+.listElement ~ .listElement {
+    margin-top: 1rem;
+}

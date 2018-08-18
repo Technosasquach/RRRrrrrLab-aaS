@@ -44,7 +44,12 @@ class CodeExecutor {
                     resolve(output);
                 }
                 else
-                    reject(exitCode);
+                    reject({
+                        err: {
+                            type: "Code Execution",
+                            raw: `Error code: ${exitCode}`
+                        }
+                    });
             });
         });
     }
