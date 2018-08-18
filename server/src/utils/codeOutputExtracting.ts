@@ -1,26 +1,41 @@
 import { ICodeOutput } from "./ICodeOutput";
-
+import { codeOutputs, programOutput, programTested, programTestable, programOutputTypes } from "./../config/codeOutput";
+import * as fs from "fs";
 
 export class CodeOutputExtractor {
 
-    public static parseOutput() {
+    public static parseOutput(pathToFile: string) {
         return new Promise((resolve: Function, reject: Function) => {
-            // resolve(output);
-            // reject(exitCode);
+            const output: ICodeOutput = undefined;
+            // Run for each line
+            fs.readFile(pathToFile, (err: Error, data: Buffer) => {
+                if(err) reject("Failed to read given file");
+                const lines: string[] = data.toString().split("\n");
+                lines.forEach((val: string, index: number) => {
+                    this.extractContentFromLine(val).forEach((data: programTested) => {
+                        if (data.type == programOutputTypes.GRAPH) output.graphical.push(data.val);
+                        if (data.type == programOutputTypes.NUMBER) output.numerical.push(data.val);
+                        if (data.type == programOutputTypes.NUMBERS) output.numerical.push(data.val);
+                    });
+                });
+                resolve(output);
+            });
         });
     }
 
-    /**
-     * extractContent
-     * 
-     * Looks for the appropriate match in regex
-     * then will return the next element found after
-     * the following space, till the next space
-     * 
-     * @param regex {string} Given string to look for
-     */
-    private static extractContent(lookUp: string): string {
-        const reg = new RegExp('\\w+');
-        return "";
+    private static extractContentFromLine(lookUp: string): programTested[] {
+        // Test against all know types of things
+        let foundTypes: programTested[] = []
+        codeOutputs.forEach((testable: programTestable) => {
+            const foundText = lookUp.match(testable.regex);
+            if(foundText.length > 0) {
+                // Will have found a match
+                foundTypes.push({
+                    type: testable.type,
+                    val: foundText[1]
+                })
+            }
+        })
+        return foundTypes;
     }
 }
