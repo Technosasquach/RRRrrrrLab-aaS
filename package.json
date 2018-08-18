@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run watch",
     "build-client": "node ./node_modules/webpack/bin/webpack --config ./public/webpack.config.nodePage.js --watch --progress --profile --colors",
-    "build-server": "tsc -p ./ && npm run tslint",
+    "build-server": "tsc -p ./",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Nodemon\" -c \"cyan.bold,green.bold\" \"tsc -w -p ./\" \"npm run serve\"",
     "serve": "nodemon dist/index.js"
   },
@@ -34,6 +34,7 @@
     "@types/node": "^10.7.1",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
+    "@types/uuid": "^3.4.3",
     "concurrently": "^3.6.1",
     "nodemon": "^1.18.3",
     "typescript": "^3.0.1"
