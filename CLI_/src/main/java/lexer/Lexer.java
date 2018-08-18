@@ -19,6 +19,7 @@ public class Lexer {
 
         alias.put("the", "ye");
         alias.put("them", "ye");
+        alias.put("they", "ye");
         alias.put("that", "ye");
         alias.put("those", "ye");
         alias.put("it", "ye");

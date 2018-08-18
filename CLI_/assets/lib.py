@@ -79,4 +79,4 @@ def how_does_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
     out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
 
 def fire_ye_func():
-    fire_the_cannons_func(calc_angle, calc_vel, calc_grav)
+    fire_ye_cannons_func(calc_angle, calc_vel, calc_grav)
