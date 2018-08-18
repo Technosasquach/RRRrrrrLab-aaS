@@ -23,19 +23,23 @@ public class Lexer {
         return result;
     }
 
-    private String nextString() throws IOException {
-        StringBuilder builder = new StringBuilder();
-        for (;;) {
-            int c = peekChar();
-            if (c == -1 || !Character.isAlphabetic(c)) {
-                return builder.toString();
-            }
-            builder.append((char)Character.toLowerCase(nextChar()));
-        }
+    private boolean isString(int c) {
+        return Character.isAlphabetic(c) || c == '\'';
     }
 
     private boolean isNumber(int c) {
         return Character.isDigit(c) || c == '-' || c == '.';
+    }
+
+    private String nextString() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (; ; ) {
+            int c = peekChar();
+            if (c == -1 || !isString(c)) {
+                return builder.toString();
+            }
+            builder.append((char) Character.toLowerCase(nextChar()));
+        }
     }
 
     private double nextNumber() throws IOException {
@@ -55,7 +59,7 @@ public class Lexer {
         }
 
         int c = peekChar();
-        if (Character.isAlphabetic(peekChar())) {
+        if (isString(peekChar())) {
             return new Token(nextString());
         } else if (isNumber(c)) {
             return new Token(nextNumber());

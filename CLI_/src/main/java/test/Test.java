@@ -17,8 +17,8 @@ public class Test {
         }
         System.out.println("EOF");
 
-        Python python = new Python("test.py");
-        python.callFunction("hello_world");
+        Python python = new Python("test.py", "0");
+        python.callFunction("hello_world", null);
         python.run();
     }
 }
