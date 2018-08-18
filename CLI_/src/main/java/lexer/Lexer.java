@@ -30,7 +30,7 @@ public class Lexer {
             if (c == -1 || !Character.isAlphabetic(c)) {
                 return builder.toString();
             }
-            builder.append((char)nextChar());
+            builder.append((char)Character.toLowerCase(nextChar()));
         }
     }
 
