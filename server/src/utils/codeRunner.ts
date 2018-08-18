@@ -39,14 +39,12 @@ export class CodeRunner {
                 new CodeExecutor(pathTofileName, uuid).exec().then(
                     (result: CodeProcess) => {
                         CodeOutputExtractor.parseOutput(result.outPath).then(
-                            (result: ICodeOutput) => {
-                                resolve(result);
-                            }, 
-                            (err: ICodeOutput) => { 
-                                resolve({ err: { type: "Output Processor", raw: err }});
+                            (result: ICodeOutput) => { resolve(result); }, 
+                            (err:    ICodeOutput) => { resolve(
+                                { err: { type: "Output Processor", raw: err }});
                             }
                         )
-                        return { err: { type: "Output Processor", raw: "Exited with no futher code execution" }};
+                        return { err: { type: "Output Processor", raw: "Exited with no further code execution" }};
                     }, 
                     (err: ICodeOutput) => { resolve(err); }
                 );

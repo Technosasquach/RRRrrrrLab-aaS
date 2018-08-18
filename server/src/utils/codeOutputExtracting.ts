@@ -16,6 +16,7 @@ export class CodeOutputExtractor {
                         if (data.type == programOutputTypes.GRAPH) output.graphical.push(data.val);
                         if (data.type == programOutputTypes.NUMBER) output.numerical.push(data.val);
                         if (data.type == programOutputTypes.NUMBERS) output.numerical.push(data.val);
+                        if (data.type == programOutputTypes.TEXT) output.lexical.push(data.val);
                     });
                 });
                 resolve(output);

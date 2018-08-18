@@ -2,6 +2,7 @@ export enum programOutputTypes {
     NUMBER = "NUMBER",
     NUMBERS = "NUMBERS",
     GRAPH = "GRAPH",
+    TEXT = "TEXT"
 }
 
 export interface programTestable {
@@ -16,15 +17,11 @@ export interface programTested {
 
 export const codeOutputs: programTestable[] = [
     {
-        type: programOutputTypes.NUMBER,
-        regex: /^<<<OUTPUT:NUMBER>>> (.*?) .*$/gm
-    },
-    {
-        type: programOutputTypes.NUMBERS,
-        regex: /^<<<OUTPUT:NUMBERS>>> (.*?) .*$/gm
+        type: programOutputTypes.TEXT,
+        regex: /{{text:(.*?)}}/gm
     },
     {
         type: programOutputTypes.GRAPH,
-        regex: /^<<<OUTPUT:GRAPH>>> (.*?) .*$/gm
+        regex: /{{graph:(.*?)}}/gm
     },
 ]
