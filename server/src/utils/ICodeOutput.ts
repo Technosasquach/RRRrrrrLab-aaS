@@ -12,4 +12,6 @@ export interface ICodeOutput {
         type: string,
         raw: string
     },
+    numerical?: string[],
+    graphical?: string[]
 }
