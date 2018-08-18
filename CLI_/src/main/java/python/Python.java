@@ -10,8 +10,10 @@ public class Python {
         this.script = script;
         output = new FileWriter(script);
         output.write("" +
-                "def hello_world():\n" +
-                "\tprint('Hello, World!')\n");
+                "def out_text(text):\n" +
+                "\tprint('{{text:' + text + '}}')\n" +
+                "def hello_world_func(value = 'Hello, World!'):\n" +
+                "\tout_text(value)\n");
     }
 
     public int run() throws Exception {
