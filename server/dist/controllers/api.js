@@ -47,7 +47,27 @@ function mountAPIService(app) {
             else {
                 res.json({
                     err: {
-                        type: "API Error",
+                        type: "execText API Error",
+                        raw: "Major top level error in API"
+                    },
+                    date: Date.now()
+                });
+            }
+        });
+    });
+    app.post("/api/execFile", (req, res) => {
+        codeRunner_1.CodeRunner.execFileFunction(req.body.codePath)
+            .then((output) => {
+            res.json(Object.assign({}, output, { date: Date.now() }));
+        })
+            .catch((output) => {
+            if (output) {
+                res.json(Object.assign({}, output, { date: Date.now() }));
+            }
+            else {
+                res.json({
+                    err: {
+                        type: "execFile API Error",
                         raw: "Major top level error in API"
                     },
                     date: Date.now()
