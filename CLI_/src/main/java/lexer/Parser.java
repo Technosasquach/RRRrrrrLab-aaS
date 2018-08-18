@@ -1,4 +1,6 @@
 package lexer;
+import python.Python;
+
 import java.io.*;
 
 public class Parser {
@@ -6,8 +8,9 @@ public class Parser {
     public static void main(String[] args) throws Exception {
         String file = args[0];
         String processid = args[1];
-
         Lexer lexer = new Lexer(new FileReader(file));
+
+        Python py = new Python("test.py");
 
         StringBuilder sb = new StringBuilder();
         for (;;) {
@@ -20,7 +23,7 @@ public class Parser {
                 break;
             } else if (token.getString().equals("arrgh")) {
                 sb.append("func");
-                System.out.println(sb.toString());
+                py.callFunction(sb.toString());
                 sb.setLength(0);
 
             } else {
@@ -28,5 +31,7 @@ public class Parser {
                 sb.append("_");
             }
         }
+
+        py.run();
     }
 }
