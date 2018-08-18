@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const codeRunner_1 = require("../utils/codeRunner");
 function mountAPIService(app) {
     // API Pages
     // -------------------------------------------------------------
@@ -33,6 +34,26 @@ function mountAPIService(app) {
     });
     // Returns basic information on the node id given
     app.get("/api/node/:id", function (req, res) {
+    });
+    app.post("/api/execText", (req, res) => {
+        codeRunner_1.CodeRunner.execFunction(req.body.code)
+            .then((output) => {
+            res.json(Object.assign({}, output, { date: Date.now() }));
+        })
+            .catch((output) => {
+            if (output) {
+                res.json(Object.assign({}, output, { date: Date.now() }));
+            }
+            else {
+                res.json({
+                    err: {
+                        type: "API Error",
+                        raw: "Major top level error in API"
+                    },
+                    date: Date.now()
+                });
+            }
+        });
     });
 }
 exports.mountAPIService = mountAPIService;
