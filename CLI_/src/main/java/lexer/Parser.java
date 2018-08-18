@@ -1,18 +1,30 @@
 package lexer;
-import python.Python;
 
+import python.*;
 import java.io.*;
 
 public class Parser {
+    private static StringBuilder sb;
+
+//    private static boolean checkCall(Token token) throws Exception {
+//        if (Constants.FUNC_CALL.contains(token.getString())) {
+//            sb.append("func");
+//            py.callFunction(sb.toString());
+//            sb.setLength(0);
+//            return true;
+//        }
+//    }
 
     public static void main(String[] args) throws Exception {
-        String file = args[0];
-        String processid = args[1];
+        Constants.init();
+        String processid = args[0];
+        String file = args[1];
+        String script = args[2];
         Lexer lexer = new Lexer(new FileReader(file));
 
-        Python py = new Python("test.py");
+        Python py = new Python(script);
 
-        StringBuilder sb = new StringBuilder();
+        sb = new StringBuilder();
         for (;;) {
             Token token = lexer.nextToken();
 
@@ -21,7 +33,7 @@ public class Parser {
 
                 // TODO Handle the break
                 break;
-            } else if (token.getString().equals("arrgh")) {
+            } else if (Constants.FUNC_CALL.contains(token.getString())) {
                 sb.append("func");
                 py.callFunction(sb.toString());
                 sb.setLength(0);
