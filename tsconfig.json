@@ -16,11 +16,11 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "dist",
+        "outDir": "server/dist",
         "baseUrl": ".",
     },
     "include": [
-        "src/**/*"
+        "server/src/**/*"
     ],
     "files": [
         "server/src/index.ts"
