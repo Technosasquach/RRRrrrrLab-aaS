@@ -28,7 +28,7 @@ import python.Python;
 
 public class Texttospeech {
     public static void main(String[] args) throws Exception {
-        Python python = new Python(".\\CLI_\\src\\main\\java\\texttospeech\\texttospeech.py");
+        Python python = new Python(".\\CLI_\\src\\main\\java\\texttospeech\\texttospeech.py", "0");
         python.run();
     }
 }

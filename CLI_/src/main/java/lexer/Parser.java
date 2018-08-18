@@ -1,30 +1,39 @@
 package lexer;
 
 import python.*;
+
+import java.util.*;
 import java.io.*;
 
 public class Parser {
-    private static StringBuilder sb;
+    private static Lexer lexer;
+    private static StringBuilder builder;
+    private static Python python;
+    private static List<Python.Param> params;
 
-//    private static boolean checkCall(Token token) throws Exception {
-//        if (Constants.FUNC_CALL.contains(token.getString())) {
-//            sb.append("func");
-//            py.callFunction(sb.toString());
-//            sb.setLength(0);
-//            return true;
-//        }
-//    }
+    private static boolean checkCall(Token token) throws Exception {
+        if (Constants.FUNC_CALL.contains(token.getString())) {
+            builder.append("func");
+            python.callFunction(builder.toString(), params);
+            builder.setLength(0);
+            params.clear();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         Constants.init();
-        String processid = args[0];
+        String process = args[0];
         String file = args[1];
         String script = args[2];
-        Lexer lexer = new Lexer(new FileReader(file));
 
-        Python py = new Python(script);
+        lexer = new Lexer(new FileReader(file));
+        python = new Python(script, process);
+        builder = new StringBuilder();
+        params = new ArrayList<>();
 
-        sb = new StringBuilder();
         for (;;) {
             Token token = lexer.nextToken();
 
@@ -33,17 +42,27 @@ public class Parser {
 
                 // TODO Handle the break
                 break;
-            } else if (Constants.FUNC_CALL.contains(token.getString())) {
-                sb.append("func");
-                py.callFunction(sb.toString());
-                sb.setLength(0);
 
-            } else {
-                sb.append(token.getString());
-                sb.append("_");
+            } else if (Constants.FUNC_VAR.contains(token.getString())) {
+
+                for (;;) {
+                    token = lexer.nextToken();
+                    if (checkCall(token)) {
+                        break;
+                    } else {
+                        Python.Param param = new Python.Param();
+                        param.name = token.getString();
+                        param.value = lexer.nextToken().getNumber();
+                        params.add(param);
+                    }
+                }
+
+            } else if (!checkCall(token)) {
+                builder.append(token.getString());
+                builder.append("_");
             }
         }
 
-        py.run();
+        python.run();
     }
 }
