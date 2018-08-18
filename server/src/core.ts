@@ -96,7 +96,7 @@ app.use(express.static(path.join(__dirname, "/../public")));
 // Prod vs Dev code and display
 if (app.get("env") === "production") {
     app.set("trust proxy", 1); // trust first proxy
-} 
+}
 // else {
 //     app.locals.pretty = true;
 // }
@@ -107,7 +107,7 @@ mountAPIService(app);
 
 
 // The last route run
-// import { Request, Response } from "express";
-// app.get("*", (req: Request, res: Response) => {
-//     res.sendFile(path.resolve(__dirname, "./../../../client/dist/index.html"));
-// });
+import { Request, Response } from "express";
+app.get("*", (req: Request, res: Response) => {
+    res.sendFile(path.resolve(__dirname, "./../../../client/dist/index.html"));
+});
