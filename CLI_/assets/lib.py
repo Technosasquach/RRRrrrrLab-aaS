@@ -33,7 +33,10 @@ def out_image(name, x, y, width, height):
     hh = height / 2
     imshow(imread("assets/" + name + ".png"), extent = (x - hw, x + hw, y - hh, y + hh))
 
-def fire_the_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
+def func():
+    pass
+
+def fire_ye_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
     global last_dist
     angle = radians(angle)
     vx = cos(angle) * velocity
@@ -44,10 +47,10 @@ def fire_the_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
     out_image("end", max, 0, 1, 1)
     last_dist = max
 
-def where_be_that_func():
+def where_be_ye_func():
     out_text("Distance travelled: " + str(int(last_dist)) + " m")
 
-def reveal_your_plunder_func():
+def reveal_ye_plunder_func():
     global image_id
     out_image("ship", 0, 0, 2, 1)
     axis("scaled")
@@ -57,7 +60,7 @@ def reveal_your_plunder_func():
     print("{{graph:" + file + "}}")
     image_id = image_id + 1
 
-def does_i_hit_func(distance = 10):
+def does_ye_hit_func(distance = 10):
     out_image("enemy", distance, 0, 2, 1)
     out_image("end", last_dist, 0, 1, 1)
     if last_dist > distance - 1.5 and last_dist < distance + 1.5:
@@ -65,7 +68,7 @@ def does_i_hit_func(distance = 10):
     else:
         out_text("SHIVER ME TIMBERS, WE MISSED")
 
-def how_do_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
+def how_does_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
     global calc_angle, calc_vel, calc_grav
     calc_angle = angle
     calc_grav = gravity
@@ -75,5 +78,5 @@ def how_do_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
     calc_vel = sqrt((g*d)/(2*sin(angle)*cos(angle)))
     out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
 
-def ye_fire_that_func():
+def fire_ye_func():
     fire_the_cannons_func(calc_angle, calc_vel, calc_grav)

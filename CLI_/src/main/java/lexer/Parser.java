@@ -12,7 +12,7 @@ public class Parser {
     private static List<Python.Param> params;
 
     private static boolean checkCall(Token token) throws Exception {
-        if (Constants.FUNC_CALL.contains(token.getString())) {
+        if (token.getString().equals("yar")) {
             builder.append("func");
             python.callFunction(builder.toString(), params);
             builder.setLength(0);
@@ -24,7 +24,6 @@ public class Parser {
     }
 
     public static void main(String[] args) throws Exception {
-        Constants.init();
         String process = args[0];
         String file = args[1];
         String script = args[2];
@@ -43,13 +42,13 @@ public class Parser {
                 // TODO Handle the break
                 break;
 
-            } else if (Constants.FUNC_VAR.contains(token.getString())) {
+            } else if (token.getString().equals("with")) {
 
                 for (;;) {
                     token = lexer.nextToken();
                     if (checkCall(token)) {
                         break;
-                    } else {
+                    } else if (!token.getString().equals("and")) {
                         Python.Param param = new Python.Param();
                         param.name = token.getString();
                         param.value = lexer.nextToken().getNumber();
