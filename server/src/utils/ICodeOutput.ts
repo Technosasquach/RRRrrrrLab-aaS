@@ -13,5 +13,6 @@ export interface ICodeOutput {
         raw: string
     },
     numerical?: string[],
-    graphical?: string[]
+    graphical?: string[],
+    lexical?: string[]
 }
