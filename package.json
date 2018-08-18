@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Technosasquach/RRRrrrrLab-aaS#readme",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/compression": "0.0.36",
     "@types/connect-mongo": "0.0.38",
     "@types/cookie-parser": "^1.4.1",
@@ -58,6 +59,7 @@
     "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "connect-mongo": "^2.0.1",
