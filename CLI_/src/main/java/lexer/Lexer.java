@@ -1,13 +1,35 @@
 package lexer;
 
 import java.io.*;
+import java.util.*;
 
 public class Lexer {
     private Reader reader;
     private int peeked = -1;
+    private Map<String, String> alias = new HashMap<>();
 
     public Lexer(Reader reader) {
         this.reader = reader;
+
+        alias.put("argh", "yar");
+        alias.put("m'hartys", "yar");
+        alias.put("r", "yar");
+
+        alias.put("or", "and");
+
+        alias.put("the", "ye");
+        alias.put("them", "ye");
+        alias.put("that", "ye");
+        alias.put("those", "ye");
+        alias.put("it", "ye");
+        alias.put("i", "ye");
+        alias.put("me", "ye");
+        alias.put("mine", "ye");
+        alias.put("you", "");
+        alias.put("your", "ye");
+
+        alias.put("do", "does");
+        alias.put("shoot", "fire");
     }
 
     private int peekChar() throws IOException {
@@ -36,7 +58,8 @@ public class Lexer {
         for (; ; ) {
             int c = peekChar();
             if (c == -1 || !isString(c)) {
-                return builder.toString();
+                String result = builder.toString();
+                return alias.getOrDefault(result, result);
             }
             builder.append((char) Character.toLowerCase(nextChar()));
         }
