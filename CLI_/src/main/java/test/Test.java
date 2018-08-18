@@ -1,6 +1,7 @@
 package test;
 
 import lexer.*;
+import python.*;
 import java.io.*;
 
 public class Test {
@@ -15,5 +16,9 @@ public class Test {
             }
         }
         System.out.println("EOF");
+
+        Python python = new Python("test.py");
+        python.callFunction("hello_world");
+        python.run();
     }
 }
