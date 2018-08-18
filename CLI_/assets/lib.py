@@ -4,7 +4,12 @@ from matplotlib.image import *
 
 process = 0
 image_id = 0
-last_dist = 0
+
+last_dist = 10
+
+calc_angle = 45
+calc_vel = 10
+calc_grav = 9.8
 
 def set_process(p):
     global process
@@ -40,7 +45,7 @@ def fire_the_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
     last_dist = max
 
 def where_be_that_func():
-    out_text("Distance travelled: " + str(last_dist))
+    out_text("Distance travelled: " + str(int(last_dist)) + " m")
 
 def reveal_your_plunder_func():
     global image_id
@@ -59,3 +64,16 @@ def does_i_hit_func(distance = 10):
         out_text("THAR SHE BLOWS")
     else:
         out_text("SHIVER ME TIMBERS, WE MISSED")
+
+def how_do_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
+    global calc_angle, calc_vel, calc_grav
+    calc_angle = angle
+    calc_grav = gravity
+    angle = radians(angle)
+    g = gravity
+    d = distance
+    calc_vel = sqrt((g*d)/(2*sin(angle)*cos(angle)))
+    out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
+
+def ye_fire_that_func():
+    fire_the_cannons_func(calc_angle, calc_vel, calc_grav)
