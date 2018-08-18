@@ -34,6 +34,21 @@ public class Lexer {
         }
     }
 
+    private boolean isNumber(int c) {
+        return Character.isDigit(c) || c == '-' || c == '.';
+    }
+
+    private double nextNumber() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (;;) {
+            int c = peekChar();
+            if (c == -1 || !isNumber(c)) {
+                return Double.parseDouble(builder.toString());
+            }
+            builder.append((char)nextChar());
+        }
+    }
+
     public Token nextToken() throws Exception {
         while (Character.isWhitespace(peekChar())) {
             nextChar();
@@ -42,6 +57,8 @@ public class Lexer {
         int c = peekChar();
         if (Character.isAlphabetic(peekChar())) {
             return new Token(nextString());
+        } else if (isNumber(c)) {
+            return new Token(nextNumber());
         } else if (c == -1) {
             return new Token();
         } else {
