@@ -1,0 +1,43 @@
+@import "./../../variables.less";
+
+.tab-list {
+    border-bottom: 2px solid white;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+}
+
+.tab-list-item {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: -1px;
+    margin: 0px;
+    padding: 0.75rem 2.5rem;
+    color: white;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    background-color: white;
+    color: black;
+
+    &:hover {
+        background-color: darken(white, 10%);
+    }
+
+    &:active {
+        background-color: darken(orange, 10%);
+    }
+}
+
+.tab-list-active {
+    z-index: 1000;
+    background-color: orange;
+    // background-clip: content-box;
+    color: black;
+    // border: 5px solid darken(orange, 10%);
+    border-bottom: 2px orange solid;
+    border-width: 1px 1px 0 1px;
+
+    &:hover {
+        background-color: orange !important;
+    }
+}

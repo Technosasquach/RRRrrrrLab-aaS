@@ -1,0 +1,34 @@
+@import "./../../variables.less";
+
+@margin-spacing: 50px;
+
+.division {
+    box-sizing: border-box;
+    margin: @margin-spacing;
+    // min-width: 300px;
+    border: 1px solid darken(@colour-dark, 10%);
+    background-color: lighten(@colour-dark, 10%);
+    padding: 25px;
+    border-radius: 1rem;
+
+    -webkit-box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+    box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+
+    &:nth-child(1) {
+        margin-right: @margin-spacing / 2;
+        width: 40%;
+    }
+
+    &:nth-child(2) {
+        margin-left: @margin-spacing / 2;
+        width: 60%;
+    }
+}
+
+#output {
+
+    img {
+        width: 100%;
+    }
+}
