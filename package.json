@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch",
-    "build-client": "node ./node_modules/webpack/bin/webpack --config ./client/webpack.config.js --watch --progress --profile --colors",
-    "build-server": "tsc -p ./ && npm run tslint",
+    "build-client": "node ./node_modules/webpack/bin/webpack --config ./public/webpack.config.nodePage.js --watch --progress --profile --colors",
+    "build-server": "tsc -p ./",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Nodemon\" -c \"cyan.bold,green.bold\" \"tsc -w -p ./\" \"npm run serve\"",
     "serve": "nodemon dist/index.js"
   },
