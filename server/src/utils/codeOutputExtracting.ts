@@ -1,5 +1,5 @@
 import { ICodeOutput } from "./ICodeOutput";
-import { codeOutputs, programOutput, programTested, programTestable, programOutputTypes } from "./../config/codeOutput";
+import { codeOutputs, programTested, programTestable, programOutputTypes } from "./../config/codeOutput";
 import * as fs from "fs";
 
 export class CodeOutputExtractor {
