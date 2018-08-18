@@ -5,7 +5,7 @@ import { ICodeOutput, CodeProcess } from "./ICodeOutput";
 import { childProcessSettings } from "./../config/childprocess";
 
 import * as fs from "fs";
-import { v1 } from "uuid"
+import { v1 } from "uuid";
 
 export class CodeRunner {
 
