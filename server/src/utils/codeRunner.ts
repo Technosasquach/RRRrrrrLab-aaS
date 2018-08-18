@@ -1,9 +1,11 @@
 
 import { CodeExecutor } from "./codeExecutor";
 import { CodeOutputExtractor } from "./codeOutputExtracting";
-import { ICodeOutput } from "./ICodeOutput";
+import { ICodeOutput, CodeProcess } from "./ICodeOutput";
+import { childProcessSettings } from "./../config/childprocess";
 
 import * as fs from "fs";
+import { v1 } from "uuid"
 
 export class CodeRunner {
 
@@ -11,24 +13,27 @@ export class CodeRunner {
     // Handles function creation and 
 
     // Take a complex string and run it
-    static function execFunction(code: string): ICodeOutput {
+    public static execFunction(code: string): ICodeOutput {
         // Save file
-        const pathToFileName = fs.writeFileSync();
+        const processUUID = v1();
+        const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab
+        fs.writeFileSync(pathToFileName, code);
         // Execute on file
-        this.execFileFunction(pathToFileName);
+        return this.execFileFunction(pathToFileName, processUUID);
     };
 
     // Take a file and run it, and return a ICodeOutput object
-    static function execFileFunction(pathTofileName: string): ICodeOutput {
-        const output: ICodeOutput = new CodeExecutor(pathTofileName, ).exec();
-    };
+    public static execFileFunction(pathTofileName: string, processUUID?: string): ICodeOutput|any {
+        const uuid = processUUID || v1();
+        new CodeExecutor(pathTofileName, uuid).exec().then(
+            (result: CodeProcess) => {
 
-    private function finishFunction() {
-
-    }
-
-    static function saveFunction() {
-
+                return {};
+            }, 
+            (err: string|number) => { 
+                return { err: { type: "Process Failed", raw: "Error code: " + err }};
+            }
+        )
     };
 
 }
