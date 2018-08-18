@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run watch",
-    "build-client": "node ./node_modules/webpack/bin/webpack --config ./public/webpack.config.nodePage.js --watch --progress --profile --colors",
+    "build-client": "node ./node_modules/webpack/bin/webpack --config ./client/webpack.config.js --watch --progress --profile --colors",
     "build-server": "tsc -p ./",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Nodemon\" -c \"cyan.bold,green.bold\" \"tsc -w -p ./\" \"npm run serve\"",
-    "serve": "nodemon dist/index.js"
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Server,Client,Nodemon\" -c \"cyan.bold,magenta.bold,green.bold\" \"tsc -w -p ./\" \"npm run build-client\" \"npm run serve\"",
+    "serve": "nodemon server/dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "@types/react-dom": "^16.0.7",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
+    "@types/uuid": "^3.4.3",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -68,6 +69,7 @@
     "mongoose": "^5.2.9",
     "morgan": "^1.9.0",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "socket.io": "^2.1.1"
   }
 }
