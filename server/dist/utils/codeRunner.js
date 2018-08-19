@@ -19,7 +19,7 @@ class CodeRunner {
                 const pathToFileName = childprocess_1.childProcessSettings.pathToRawCode + "/" + processUUID + childprocess_1.childProcessSettings.outputFileTypeRLab;
                 mkdirp(path.dirname(pathToFileName), (err) => {
                     if (err)
-                        console.log(err);
+                        console.log(JSON.stringify(err));
                     fs.writeFileSync(pathToFileName, code);
                 });
                 // Execute on file
@@ -36,7 +36,7 @@ class CodeRunner {
             try {
                 const uuid = processUUID || uuid_1.v1();
                 new codeExecutor_1.CodeExecutor(pathTofileName, uuid).exec().then((result) => {
-                    codeOutputExtracting_1.CodeOutputExtractor.parseOutput(result.outPath).then((result) => { resolve(result); }, (err) => {
+                    codeOutputExtracting_1.CodeOutputExtractor.parseOutput(result.outPath, uuid).then((result) => { resolve(result); }, (err) => {
                         resolve({ err: { type: "Output Processor", raw: err } });
                     });
                     return { err: { type: "Output Processor", raw: "Exited with no further code execution" } };

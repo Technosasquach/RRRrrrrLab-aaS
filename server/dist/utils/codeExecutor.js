@@ -4,45 +4,74 @@ const cprocess = require("child_process");
 const path = require("path");
 const fs = require("fs");
 const childprocess_1 = require("./../config/childprocess");
+const core_1 = require("./../core");
 const mkdirp = require("mkdirp");
 class CodeExecutor {
     constructor(pathToFile, processUUID) {
+        this.pathToFile = pathToFile;
+        this.processUUID = processUUID;
         this.outPath = childprocess_1.childProcessSettings.pathToLogs +
             "/" + this.processUUID + childprocess_1.childProcessSettings.fileOutSuffix +
             childprocess_1.childProcessSettings.outputFileTypeLog;
         this.errPath = childprocess_1.childProcessSettings.pathToLogs +
             "/" + this.processUUID + childprocess_1.childProcessSettings.fileOutSuffix +
             childprocess_1.childProcessSettings.outputFileTypeLog;
-        this.pathToFile = pathToFile;
-        this.processUUID = processUUID;
         mkdirp(path.dirname(this.outPath), (err) => {
             if (err)
-                console.log(err);
-            this.out = fs.openSync(this.outPath, "a");
+                console.log(JSON.stringify(err));
+            this.outFd = fs.openSync(this.outPath, "a");
         });
         mkdirp(path.dirname(this.errPath), (err) => {
             if (err)
-                console.log(err);
-            this.err = fs.openSync(this.errPath, "a");
+                console.log(JSON.stringify(err));
+            this.errFd = fs.openSync(this.errPath, "a");
         });
     }
     ;
     exec() {
         return new Promise((resolve, reject) => {
-            // this.err = fs.openSync('./out.log', 'a');
             const command = childprocess_1.childProcessSettings.pathToExecutableProcess;
             const args = [this.pathToFile];
+            console.log("[Process " + this.processUUID + "] Starting Process");
+            core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] Starting Process" });
             this.process = cprocess.spawn(command, args, {
                 // Process spawn options
-                stdio: ['ignore', this.out, this.err]
+                stdio: ['ignore', 'pipe', 'pipe']
+                // stdio: [ 'ignore', this.out, this.err ]
+                //stdio: [ 'ignore', this.writeStream, this.writeStream ]
             });
-            // Mount all the callbacks!
-            // ------------------------
             this.process.stdout.on('data', (data) => {
-                console.log("[Process " + this.processUUID + "] " + data);
+                console.log("[Process " + this.processUUID + "] STDOUT: " + data);
+                core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] STDOUT: " + data });
+                fs.write(this.outFd, data.toString(), (err, written, str) => {
+                    if (err)
+                        console.log("[Process " + this.processUUID + "] ERROR STDOUT: " + err);
+                    core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] ERROR STDOUT: " + err });
+                });
+            });
+            this.process.stderr.on('data', (data) => {
+                console.log("[Process " + this.processUUID + "] STDERR: " + data);
+                core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] STDERR: " + data });
+                fs.write(this.errFd, data.toString(), (err, written, str) => {
+                    if (err && err != null) {
+                        console.log("[Process " + this.processUUID + "] ERROR STDERR: " + err);
+                        core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] ERROR STDERR: " + err });
+                    }
+                });
             });
             this.process.on('close', (exitCode) => {
+                fs.close(this.outFd, (err) => {
+                    if (err)
+                        console.log("[Process " + this.processUUID + "] ERROR FILE: FAILED TO CLOSE this.OUTFD");
+                    // Io.emit('broadcast',{ msg: "[Process " + this.processUUID + "] ERROR FILE: FAILED TO CLOSE this.OUTFD" });
+                });
+                fs.close(this.errFd, (err) => {
+                    if (err)
+                        console.log("[Process " + this.processUUID + "] ERROR FILE: FAILED TO CLOSE this.OUTFD");
+                    // Io.emit('broadcast',{ msg: "[Process " + this.processUUID + "] ERROR FILE: FAILED TO CLOSE this.OUTFD" });
+                });
                 console.log("[Process " + this.processUUID + "] EXIT code: " + exitCodes[exitCode]);
+                core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] EXIT code: " + exitCodes[exitCode] });
                 if (exitCode == 0) {
                     const output = {
                         uuid: this.processUUID,
@@ -52,6 +81,7 @@ class CodeExecutor {
                         errPath: this.errPath,
                         exitCode
                     };
+                    console.log("[Process " + this.processUUID + "] EXIT Object: " + JSON.stringify(output));
                     resolve(output);
                 }
                 else
