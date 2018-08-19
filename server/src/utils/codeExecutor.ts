@@ -5,6 +5,7 @@ import * as fs from "fs";
 import { childProcessSettings } from "./../config/childprocess";
 import { CodeProcess } from "./ICodeOutput";
 
+import * as mkdirp from "mkdirp";
 export class CodeExecutor {
 
     // When constructed, will start up the process and do all of the appropiate bindings
@@ -28,15 +29,23 @@ export class CodeExecutor {
     constructor(pathToFile: string, processUUID: string) {
         this.pathToFile = pathToFile;
         this.processUUID = processUUID;
-        this.out = fs.openSync(this.outPath, "a");
-        this.err = fs.openSync(this.errPath, "a");
+        mkdirp(path.dirname(this.outPath), (err) => {
+            if (err) console.log(err);
+            this.out = fs.openSync(this.outPath, "a");
+        });
+
+        mkdirp(path.dirname(this.errPath), (err) => {
+            if (err) console.log(err);
+            this.err = fs.openSync(this.errPath, "a");
+        });
+
     };
 
     public exec() {
         return new Promise((resolve: Function, reject: Function) => {
         // this.err = fs.openSync('./out.log', 'a');
             const command: string = childProcessSettings.pathToExecutableProcess
-            const args: string[] = ["-f", this.pathToFile];
+            const args: string[] = [this.pathToFile];
             this.process = cprocess.spawn(
                 command,
                 args,
@@ -54,7 +63,8 @@ export class CodeExecutor {
             });
 
             this.process.on('close', (exitCode) => {
-                if (exitCode !== 0) {
+                console.log("[Process " + this.processUUID + "] EXIT code: " + exitCodes[exitCode]);
+                if (exitCode == 0) {
                     const output: CodeProcess = {
                         uuid: this.processUUID,
                         command,
@@ -67,10 +77,26 @@ export class CodeExecutor {
                 } else reject({
                     err: { 
                         type: "Code Execution", 
-                        raw: `Error code: ${exitCode}`
+                        raw: `Error code: ${exitCodes[exitCode]}`
                     }
                 });
             });
         });
     }
 }
+
+const exitCodes: string[] = [
+                            "0 - Success",
+                            "1 - Uncaught Fatal Exception",
+                            "2 - UNUSED ERROR CODE",
+                            "3 - Internal JavaScript Parse Error",
+                            "4 - Internal JavaScript Evaluation Failure",
+                            "5 - Fatal Error",
+                            "6 - Non-function Internal Exception Handler",
+                            "7 - Internal Exception Handler Run-Time Failure",
+                            "8 - UNUSED ERROR CODE",
+                            "9 - Invalid Argument",
+                            "10 - Internal JavaScript Run-Time Failure",
+                            "11 - Invalid Debug Argument",
+                            "12 to 127 - Signal Exits"
+                            ]
