@@ -1,5 +1,6 @@
 import * as React from "react";
 import Axios from "axios";
+import { SpeechToText } from "./texttospeech/speechtotext";
 
 import TextDisplay from "./textDisplay";
 import TitleBar from "./components/TitleBar";
@@ -18,19 +19,16 @@ interface AppState {
     response: String;
 }
 
-export default class App extends React.Component
-    // <{}, AppState> 
+export default class App extends React.Component<{},{speechRecText: string}> 
     {
 
-    // constructor(props: any){
-    //     super(props);
+    constructor(props: any){
+        super(props);
 
-    //     this.state = {
-    //         response: null
-    //     }
-        
-    //     this.handleClick = this.handleClick.bind(this);
-    // }
+        this.state = {
+            speechRecText: ""
+        }
+    }
 
     // handleClick(){
     //     Axios.post("/api/")
@@ -49,6 +47,20 @@ export default class App extends React.Component
         const image = document.createElement("img");
         image.src = "https://i.imgur.com/uJxMUy9.jpg";
         document.getElementById("output").appendChild(image);
+    }
+
+    executeSpeechRecording() {
+        SpeechToText.runSpeechToText().then(
+            (text: string) => {
+                console.log(text);
+                this.setState(
+                    {
+                        speechRecText: text
+                    }
+                );
+            },
+            () => {}
+        );
     }
 
     render() {
@@ -95,6 +107,16 @@ export default class App extends React.Component
                                 name="Execute!"
                                 execute={()=>{console.log("Clicked Button"); this.setOutput()}}
                             />
+                        </ListElement>
+                        {/* <ListElement inline={false} title="Output"></ListElement> */}
+                    </TabElement>
+                    <TabElement label="Speech Recognition">
+                        <ListElement inline={false} title="Voice Recoring">
+                            <span>Yar'rr let me spek my own language</span>
+                            <button onClick={this.executeSpeechRecording}>Record Speech</button>
+                        </ListElement>
+                        <ListElement inline={false} title="Voice Output">
+                            <p>{this.state.speechRecText}</p>
                         </ListElement>
                         {/* <ListElement inline={false} title="Output"></ListElement> */}
                     </TabElement>
