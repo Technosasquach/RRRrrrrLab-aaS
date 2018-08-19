@@ -32,6 +32,10 @@ export class CodeExecutor {
         mkdirp(path.dirname(this.outPath), (err) => {
             if (err) console.log(err);
             this.out = fs.openSync(this.outPath, "a");
+        });
+
+        mkdirp(path.dirname(this.errPath), (err) => {
+            if (err) console.log(err);
             this.err = fs.openSync(this.errPath, "a");
         });
 
@@ -59,7 +63,8 @@ export class CodeExecutor {
             });
 
             this.process.on('close', (exitCode) => {
-                if (exitCode !== 0) {
+                console.log("[Process " + this.processUUID + "] EXIT code: " + exitCodes[exitCode]);
+                if (exitCode == 0) {
                     const output: CodeProcess = {
                         uuid: this.processUUID,
                         command,
@@ -72,10 +77,26 @@ export class CodeExecutor {
                 } else reject({
                     err: { 
                         type: "Code Execution", 
-                        raw: `Error code: ${exitCode}`
+                        raw: `Error code: ${exitCodes[exitCode]}`
                     }
                 });
             });
         });
     }
 }
+
+const exitCodes: string[] = [
+                            "0 - Success",
+                            "1 - Uncaught Fatal Exception",
+                            "2 - UNUSED ERROR CODE",
+                            "3 - Internal JavaScript Parse Error",
+                            "4 - Internal JavaScript Evaluation Failure",
+                            "5 - Fatal Error",
+                            "6 - Non-function Internal Exception Handler",
+                            "7 - Internal Exception Handler Run-Time Failure",
+                            "8 - UNUSED ERROR CODE",
+                            "9 - Invalid Argument",
+                            "10 - Internal JavaScript Run-Time Failure",
+                            "11 - Invalid Debug Argument",
+                            "12 to 127 - Signal Exits"
+                            ]
