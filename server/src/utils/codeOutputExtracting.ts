@@ -30,7 +30,7 @@ export class CodeOutputExtractor {
         codeOutputs.forEach((testable: programTestable) => {
             const foundText = lookUp.match(testable.regex);
             //THIS IS PURPOSEFULLY BROKEN
-            if(foundText && foundText.length > 0) {
+            if(foundText.length > 0) {
                 // Will have found a match
                 foundTypes.push({
                     type: testable.type,

@@ -15,29 +15,38 @@ export class CodeExecutor {
     private pathToFile: string;
     private finishCallback: Function;
     private process: cprocess.ChildProcess;
-    private outPath: string = 
-        childProcessSettings.pathToLogs +
-        "/" + this.processUUID + childProcessSettings.fileOutSuffix +
-        childProcessSettings.outputFileTypeLog;
-    private errPath: string = 
-        childProcessSettings.pathToLogs +
-        "/" + this.processUUID + childProcessSettings.fileOutSuffix +
-        childProcessSettings.outputFileTypeLog;
+    private outPath: string;
+    private errPath: string;
     private out: any;
     private err: any;
+    private writeStream: any;
 
     constructor(pathToFile: string, processUUID: string) {
         this.pathToFile = pathToFile;
         this.processUUID = processUUID;
+        this.outPath = childProcessSettings.pathToLogs +
+            "/" + this.processUUID + childProcessSettings.fileOutSuffix +
+            childProcessSettings.outputFileTypeLog;
+        this.errPath = childProcessSettings.pathToLogs +
+            "/" + this.processUUID + childProcessSettings.fileOutSuffix +
+            childProcessSettings.outputFileTypeLog;
         mkdirp(path.dirname(this.outPath), (err: any) => {
             if (err) console.log(JSON.stringify(err));
-            this.out = fs.openSync(this.outPath, "a");
+            fs.open(this.outPath, "a", (err: any, fd: number) => {
+                if (err) console.log(JSON.stringify(err)) 
+                this.out = fd;
+            });
         });
 
         mkdirp(path.dirname(this.errPath), (err: any) => {
             if (err) console.log(JSON.stringify(err));
-            this.err = fs.openSync(this.errPath, "a");
+            fs.open(this.errPath, "a", (err: any, fd: number) => {
+                this.err = fd;
+            });
         });
+
+        // this.writeStream = fs.createWriteStream(this.out);
+        // this.writeStream.write.bind(this.writeStream);
 
     };
 
@@ -52,8 +61,9 @@ export class CodeExecutor {
                 {
                     // Process spawn options
                     stdio: [ 'ignore', this.out, this.err ]
+                    //stdio: [ 'ignore', this.writeStream, this.writeStream ]
                 }
-            );
+            );  
 
             // Mount all the callbacks!
             // ------------------------

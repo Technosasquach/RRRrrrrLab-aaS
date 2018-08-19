@@ -7,24 +7,32 @@ const childprocess_1 = require("./../config/childprocess");
 const mkdirp = require("mkdirp");
 class CodeExecutor {
     constructor(pathToFile, processUUID) {
+        this.pathToFile = pathToFile;
+        this.processUUID = processUUID;
         this.outPath = childprocess_1.childProcessSettings.pathToLogs +
             "/" + this.processUUID + childprocess_1.childProcessSettings.fileOutSuffix +
             childprocess_1.childProcessSettings.outputFileTypeLog;
         this.errPath = childprocess_1.childProcessSettings.pathToLogs +
             "/" + this.processUUID + childprocess_1.childProcessSettings.fileOutSuffix +
             childprocess_1.childProcessSettings.outputFileTypeLog;
-        this.pathToFile = pathToFile;
-        this.processUUID = processUUID;
         mkdirp(path.dirname(this.outPath), (err) => {
             if (err)
                 console.log(JSON.stringify(err));
-            this.out = fs.openSync(this.outPath, "a");
+            fs.open(this.outPath, "a", (err, fd) => {
+                if (err)
+                    console.log(JSON.stringify(err));
+                this.out = fd;
+            });
         });
         mkdirp(path.dirname(this.errPath), (err) => {
             if (err)
                 console.log(JSON.stringify(err));
-            this.err = fs.openSync(this.errPath, "a");
+            fs.open(this.errPath, "a", (err, fd) => {
+                this.err = fd;
+            });
         });
+        // this.writeStream = fs.createWriteStream(this.out);
+        // this.writeStream.write.bind(this.writeStream);
     }
     ;
     exec() {
@@ -35,6 +43,7 @@ class CodeExecutor {
             this.process = cprocess.spawn(command, args, {
                 // Process spawn options
                 stdio: ['ignore', this.out, this.err]
+                //stdio: [ 'ignore', this.writeStream, this.writeStream ]
             });
             // Mount all the callbacks!
             // ------------------------
