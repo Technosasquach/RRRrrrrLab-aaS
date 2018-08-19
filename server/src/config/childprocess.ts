@@ -1,11 +1,14 @@
+import * as path from 'path';
+
 export const childProcessSettings = {
-    pathToRootProcesses: "./../../../lib",
-    pathToExecutableProcess: "java",
-    pathToStore: "./../../../store",
-    pathToLogs: "./../../../store/output",
-    pathToRawCode: "./../../../store/raw",
+    //pathToRootProcesses: "./../../../lib",
+    //pathToRootProcesses: path.join(process.argv[1], "../"),
+    pathToExecutableProcess: "python",
+    pathToStore: path.join(process.argv[1], "../../store"),
+    pathToLogs: path.join(process.argv[1], "../../store/output"),
+    pathToRawCode: path.join(process.argv[1], "../../store/raw"),
     fileOutSuffix: "-log",
     fileErrSuffix: "-err",
     outputFileTypeLog: ".rumlog",
-    outputFileTypeRLab: ".rum"
+    outputFileTypeRLab: ".py"
 }

@@ -9,35 +9,45 @@ exports.App = app;
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 exports.Server = server;
+// Dependencies
+// ----------------------------------------------------------------------------
+const mongoose = require("mongoose");
+// import * as passport from "passport";
+// export const Passport = passport;
+// Utilities
+// ----------------------------------------------------------------------------
+const compression = require("compression");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const errorHandler = require("errorhandler");
 const logger = require("morgan");
 const lusca = require("lusca");
 const path = require("path");
 // const flash = require("connect-flash");
-// // MongooseDB
-// // ----------------------------------------------------------------------------
-// // mongoose.connect("mongodb://localhost:27017/above22water");
-// // mongoose.connection.on("error", () => {
-// //     console.log("MongoDB connection error. Please make sure MongoDB is running.");
-// //     process.exit();
-// // });
-// // Server Configuration
-// // ----------------------------------------------------------------------------
-// app.set("port", process.env.PORT || 3000);
-// // Set where the view engine is getting its templates from
-// // app.set("views", path.join(__dirname, "../views"));
-// // // Setting the default page rendering engine
-// // app.set("view engine", "pug");
-// // Static content delivery compression
-// app.use(compression());
-// // URL/URI and HTTP content decoding and parsing
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// // Cookie content decoding and parsing
-// app.use(cookieParser());
-// // Mounts the session store with an auto loader into MongooseDB
-// const MongoStore = require("connect-mongo")(session);
-// // Allows the session storage to be put into mongoose
+// MongooseDB
+// ----------------------------------------------------------------------------
+//mongoose.connect("mongodb://localhost:27017/above22water");
+mongoose.connection.on("error", () => {
+    console.log("MongoDB connection error. Please make sure MongoDB is running.");
+    process.exit();
+});
+// Server Configuration
+// ----------------------------------------------------------------------------
+app.set("port", process.env.PORT || 3000);
+// Set where the view engine is getting its templates from
+// app.set("views", path.join(__dirname, "../views"));
+// // Setting the default page rendering engine
+// app.set("view engine", "pug");
+// Static content delivery compression
+app.use(compression());
+// URL/URI and HTTP content decoding and parsing
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// Cookie content decoding and parsing
+app.use(cookieParser());
+// Mounts the session store with an auto loader into MongooseDB
+//const MongoStore = require("connect-mongo")(session);
+// Allows the session storage to be put into mongoose
 // app.use(session({
 //     resave: true,
 //     saveUninitialized: true,

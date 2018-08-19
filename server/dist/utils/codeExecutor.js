@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const cprocess = require("child_process");
+const path = require("path");
 const fs = require("fs");
 const childprocess_1 = require("./../config/childprocess");
+const mkdirp = require("mkdirp");
 class CodeExecutor {
     constructor(pathToFile, processUUID) {
         this.outPath = childprocess_1.childProcessSettings.pathToLogs +
@@ -13,15 +15,19 @@ class CodeExecutor {
             childprocess_1.childProcessSettings.outputFileTypeLog;
         this.pathToFile = pathToFile;
         this.processUUID = processUUID;
-        this.out = fs.openSync(this.outPath, "a");
-        this.err = fs.openSync(this.errPath, "a");
+        mkdirp(path.dirname(this.outPath), (err) => {
+            if (err)
+                console.log(err);
+            this.out = fs.openSync(this.outPath, "a");
+            this.err = fs.openSync(this.errPath, "a");
+        });
     }
     ;
     exec() {
         return new Promise((resolve, reject) => {
             // this.err = fs.openSync('./out.log', 'a');
             const command = childprocess_1.childProcessSettings.pathToExecutableProcess;
-            const args = ["-f", this.pathToFile];
+            const args = [this.pathToFile];
             this.process = cprocess.spawn(command, args, {
                 // Process spawn options
                 stdio: ['ignore', this.out, this.err]

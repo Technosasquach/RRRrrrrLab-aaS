@@ -5,6 +5,7 @@ import * as fs from "fs";
 import { childProcessSettings } from "./../config/childprocess";
 import { CodeProcess } from "./ICodeOutput";
 
+import * as mkdirp from "mkdirp";
 export class CodeExecutor {
 
     // When constructed, will start up the process and do all of the appropiate bindings
@@ -28,15 +29,19 @@ export class CodeExecutor {
     constructor(pathToFile: string, processUUID: string) {
         this.pathToFile = pathToFile;
         this.processUUID = processUUID;
-        this.out = fs.openSync(this.outPath, "a");
-        this.err = fs.openSync(this.errPath, "a");
+        mkdirp(path.dirname(this.outPath), (err) => {
+            if (err) console.log(err);
+            this.out = fs.openSync(this.outPath, "a");
+            this.err = fs.openSync(this.errPath, "a");
+        });
+
     };
 
     public exec() {
         return new Promise((resolve: Function, reject: Function) => {
         // this.err = fs.openSync('./out.log', 'a');
             const command: string = childProcessSettings.pathToExecutableProcess
-            const args: string[] = ["-f", this.pathToFile];
+            const args: string[] = [this.pathToFile];
             this.process = cprocess.spawn(
                 command,
                 args,

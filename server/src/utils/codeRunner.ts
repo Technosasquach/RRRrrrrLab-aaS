@@ -5,6 +5,8 @@ import { ICodeOutput, CodeProcess } from "./ICodeOutput";
 import { childProcessSettings } from "./../config/childprocess";
 
 import * as fs from "fs";
+import * as mkdirp from "mkdirp";
+import * as path from "path";
 import { v1 } from "uuid";
 
 export class CodeRunner {
@@ -15,26 +17,30 @@ export class CodeRunner {
     // Take a complex string and run it
     public static execFunction(code: string): Promise<ICodeOutput> {
         return new Promise((resolve: Function, reject: Function) => {
-            try {
+            // try {
                 // Save file
                 const processUUID = v1();
-                const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab
-                fs.writeFileSync(pathToFileName, code);
+                const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab;
+                mkdirp(path.dirname(pathToFileName), (err) => {
+                    if (err) console.log(err);
+                    fs.writeFileSync(pathToFileName, code)
+                });
+                
                 // Execute on file
                 this.execFileFunction(pathToFileName, processUUID).then(
                     (result: ICodeOutput) => { resolve(result); },
                     (err:    ICodeOutput) => { reject(err);     }
                 );
-            } catch {
-                reject({ err: { type: "Whole exec failure", raw: "Something seriously broke (execFunction)" }})
-            }
+            // } catch {
+            //     reject({ err: { type: "Whole exec failure", raw: "Something seriously broke (execFunction)" }})
+            // }
         });
     }
 
     // Take a file and run it, and return a ICodeOutput object
     public static execFileFunction(pathTofileName: string, processUUID?: string): Promise<ICodeOutput> {
         return new Promise((resolve: Function, reject: Function) => {
-            try{
+            // try{
                 const uuid = processUUID || v1();
                 new CodeExecutor(pathTofileName, uuid).exec().then(
                     (result: CodeProcess) => {
@@ -48,9 +54,9 @@ export class CodeRunner {
                     }, 
                     (err: ICodeOutput) => { resolve(err); }
                 );
-            } catch {
-                reject({ err: { type: "Whole exec failure", raw: "Something seriously broke (execFileFunction)" }})
-            }
+            // } catch {
+            //     reject({ err: { type: "Whole exec failure", raw: "Something seriously broke (execFileFunction)" }})
+            // }
         });
     };
 
