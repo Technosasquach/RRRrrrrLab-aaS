@@ -7,7 +7,8 @@ export enum programOutputTypes {
 
 export interface programTestable {
     type: programOutputTypes,
-    regex: RegExp|string,
+    regex: string,
+    flags: string
 }
 
 export interface programTested {
@@ -18,10 +19,22 @@ export interface programTested {
 export const codeOutputs: programTestable[] = [
     {
         type: programOutputTypes.TEXT,
-        regex: /{{text:(.*?)}}/gm
+        regex: "<<<text:(.*?)>>>",
+        flags: "gm"
     },
     {
         type: programOutputTypes.GRAPH,
-        regex: /{{graph:(.*?)}}/gm
+        regex: "<<<graph:(.*?)>>>",
+        flags: "gm"
+    },
+    {
+        type: programOutputTypes.NUMBER,
+        regex: "<<<number:(.*?)>>>",
+        flags: "gm"
+    },
+    {
+        type: programOutputTypes.NUMBERS,
+        regex: "<<<numbers:(.*?)>>>",
+        flags: "gm"
     },
 ]

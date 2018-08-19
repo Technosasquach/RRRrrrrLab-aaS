@@ -44,7 +44,7 @@ export class CodeRunner {
                 const uuid = processUUID || v1();
                 new CodeExecutor(pathTofileName, uuid).exec().then(
                     (result: CodeProcess) => {
-                        CodeOutputExtractor.parseOutput(result.outPath).then(
+                        CodeOutputExtractor.parseOutput(result.outPath, uuid).then(
                             (result: ICodeOutput) => { resolve(result); }, 
                             (err:    ICodeOutput) => { resolve(
                                 { err: { type: "Output Processor", raw: err }});

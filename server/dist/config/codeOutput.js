@@ -10,11 +10,23 @@ var programOutputTypes;
 exports.codeOutputs = [
     {
         type: programOutputTypes.TEXT,
-        regex: /{{text:(.*?)}}/gm
+        regex: "<<<text:(.*?)>>>",
+        flags: "gm"
     },
     {
         type: programOutputTypes.GRAPH,
-        regex: /{{graph:(.*?)}}/gm
+        regex: "<<<graph:(.*?)>>>",
+        flags: "gm"
+    },
+    {
+        type: programOutputTypes.NUMBER,
+        regex: "<<<number:(.*?)>>>",
+        flags: "gm"
+    },
+    {
+        type: programOutputTypes.NUMBERS,
+        regex: "<<<numbers:(.*?)>>>",
+        flags: "gm"
     },
 ];
 //# sourceMappingURL=codeOutput.js.map
