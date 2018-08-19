@@ -17,7 +17,7 @@ def set_process(p):
     process = p
 
 def out_text(value):
-    print("{{text:" + str(value) + "}}")
+    print("<<<text:" + str(value) + ">>>")
 
 def out_graph(func, min, max):
     x = []
@@ -58,7 +58,7 @@ def reveal_ye_plunder_func():
     file = "storage/" + str(process) + "-" + str(image_id) + ".png"
     savefig(file)
     close()
-    print("{{graph:" + file + "}}")
+    print("<<<graph:" + file + ">>>")
     image_id = image_id + 1
 
 def does_ye_hit_func(distance = 10):
