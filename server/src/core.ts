@@ -5,7 +5,7 @@ import * as http from "http";
 const app = express();
 export const App = app;
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+export const Io = require("socket.io")(server);
 export const Server = server;
 
 // Dependencies
@@ -104,9 +104,8 @@ if (app.get("env") === "production") {
 import { mountAPIService } from "./controllers/api";
 mountAPIService(app);
 
-import { WebSocket } from "./controllers/websockets";
-export const WebSockets = new WebSocket(io);
-WebSockets.io.emit('broadcast',{ msg: "Im Alive!" });
+this.Io.emit('broadcast',{ msg: "Im Alive!" });
+setInterval(() => { Io.emit('broadcast',{ msg: "Im Alive! Time: " + new Date(new Date().getTime()).toString() }); console.log("Broadcast") }, 10000);
 
 
 // The last route run

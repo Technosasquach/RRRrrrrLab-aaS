@@ -7,7 +7,7 @@ const http = require("http");
 const app = express();
 exports.App = app;
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+exports.Io = require("socket.io")(server);
 exports.Server = server;
 // Dependencies
 // ----------------------------------------------------------------------------
@@ -93,6 +93,8 @@ if (app.get("env") === "production") {
 // }
 const api_1 = require("./controllers/api");
 api_1.mountAPIService(app);
+this.Io.emit('broadcast', { msg: "Im Alive!" });
+setInterval(() => { exports.Io.emit('broadcast', { msg: "Im Alive! Time: " + new Date(new Date().getTime()).toString() }); console.log("Broadcast"); }, 10000);
 app.get("/", (req, res) => {
     res.sendFile(path.resolve(__dirname, "./../../client/index.html"));
 });
