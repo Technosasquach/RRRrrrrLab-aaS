@@ -23,11 +23,6 @@ public class Python {
     public int run() throws Exception {
         output.close();
         ProcessBuilder p = new ProcessBuilder("python", script).inheritIO();
-        System.out.println("Directory: " + p.directory());
-        Map<String, String> env = p.environment();
-        for (Map.Entry<String, String> entry : env.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
         return p.start().waitFor();
     }
 
