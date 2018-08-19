@@ -17,12 +17,12 @@ class CodeExecutor {
         this.processUUID = processUUID;
         mkdirp(path.dirname(this.outPath), (err) => {
             if (err)
-                console.log(err);
+                console.log(JSON.stringify(err));
             this.out = fs.openSync(this.outPath, "a");
         });
         mkdirp(path.dirname(this.errPath), (err) => {
             if (err)
-                console.log(err);
+                console.log(JSON.stringify(err));
             this.err = fs.openSync(this.errPath, "a");
         });
     }

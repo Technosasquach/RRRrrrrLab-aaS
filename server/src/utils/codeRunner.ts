@@ -21,8 +21,8 @@ export class CodeRunner {
                 // Save file
                 const processUUID = v1();
                 const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab;
-                mkdirp(path.dirname(pathToFileName), (err) => {
-                    if (err) console.log(err);
+                mkdirp(path.dirname(pathToFileName), (err: any) => {
+                    if (err) console.log(JSON.stringify(err));
                     fs.writeFileSync(pathToFileName, code)
                 });
                 

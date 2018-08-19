@@ -29,13 +29,13 @@ export class CodeExecutor {
     constructor(pathToFile: string, processUUID: string) {
         this.pathToFile = pathToFile;
         this.processUUID = processUUID;
-        mkdirp(path.dirname(this.outPath), (err) => {
-            if (err) console.log(err);
+        mkdirp(path.dirname(this.outPath), (err: any) => {
+            if (err) console.log(JSON.stringify(err));
             this.out = fs.openSync(this.outPath, "a");
         });
 
-        mkdirp(path.dirname(this.errPath), (err) => {
-            if (err) console.log(err);
+        mkdirp(path.dirname(this.errPath), (err: any) => {
+            if (err) console.log(JSON.stringify(err));
             this.err = fs.openSync(this.errPath, "a");
         });
 

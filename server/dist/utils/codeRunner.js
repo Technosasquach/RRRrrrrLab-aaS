@@ -19,7 +19,7 @@ class CodeRunner {
                 const pathToFileName = childprocess_1.childProcessSettings.pathToRawCode + "/" + processUUID + childprocess_1.childProcessSettings.outputFileTypeRLab;
                 mkdirp(path.dirname(pathToFileName), (err) => {
                     if (err)
-                        console.log(err);
+                        console.log(JSON.stringify(err));
                     fs.writeFileSync(pathToFileName, code);
                 });
                 // Execute on file
