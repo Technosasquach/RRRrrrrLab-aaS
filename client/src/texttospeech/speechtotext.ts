@@ -10,6 +10,7 @@ export class SpeechToText {
 
     public static runSpeechToText() {
         return new Promise((resolve: Function, reject: Function) => {
+            console.log("Started to resolve promise");
             // Get the SpeechRecogntion class
             //const {SpeechRecognition}: IWindow = <IWindow>window;
             const {webkitSpeechRecognition}: IWindow = <IWindow>window; // Chrome

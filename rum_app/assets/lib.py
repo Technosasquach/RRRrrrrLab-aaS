@@ -1,8 +1,23 @@
 from math import *
 from random import *
+
+import imageio
+
+# import pyplot
+
+import matplotlib
+matplotlib.use("svg")
+
 from matplotlib.pyplot import *
 from matplotlib.image import *
-import imageio
+
+
+
+# import numpy as np
+# matplotlib.use()
+# from matplotlib.pyplot import *
+
+
 
 xkcd()
 
@@ -40,7 +55,7 @@ def out_image(name, x, y, width, height):
 def out_final(size):
     out_image("ship", 0, 0, 2, 1)
     axis(size)
-    file = "storage/" + str(process) + "-" + "temp.png"
+    file = "../storage/" + str(process) + "-" + "temp.png"
     savefig(file)
     close()
     data = imread(file)
@@ -65,7 +80,7 @@ def where_be_ye_func():
 
 def reveal_ye_plunder_func():
     global image_id
-    file = "storage/" + str(process) + "-" + str(image_id) + ".png"
+    file = "../storage/" + str(process) + "-" + str(image_id) + ".png"
     imsave(file, out_final("scaled"))
     print("<<<graph:" + file + ">>>")
     image_id = image_id + 1
@@ -112,7 +127,7 @@ def man_of_war_func(shots = 100):
 
 def watch_ye_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
     global image_id
-    file = "storage/" + str(process) + "-" + str(image_id) + ".gif"
+    file = "../storage/" + str(process) + "-" + str(image_id) + ".gif"
     writer = imageio.get_writer(file, mode = "I")
 
     global last_dist

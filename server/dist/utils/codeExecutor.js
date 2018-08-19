@@ -31,14 +31,22 @@ class CodeExecutor {
     exec() {
         return new Promise((resolve, reject) => {
             const command = childprocess_1.childProcessSettings.pathToExecutableProcess;
-            const args = [this.pathToFile];
+            const args = [
+                "-jar",
+                "./rum_app.jar",
+                this.processUUID,
+                this.pathToFile,
+                childprocess_1.childProcessSettings.pathToPyCode + "/" + this.processUUID + ".py"
+            ];
             console.log("[Process " + this.processUUID + "] Starting Process");
             core_1.Io.emit('broadcast', { msg: "[Process " + this.processUUID + "] Starting Process" });
-            this.process = cprocess.spawn(command, args, {
+            this.process = cprocess.spawn(command, args, 
+            // [],
+            {
                 // Process spawn options
                 stdio: ['ignore', 'pipe', 'pipe']
                 // stdio: [ 'ignore', this.out, this.err ]
-                //stdio: [ 'ignore', this.writeStream, this.writeStream ]
+                // stdio: [ 'ignore', this.writeStream, this.writeStream ]
             });
             this.process.stdout.on('data', (data) => {
                 console.log("[Process " + this.processUUID + "] STDOUT: " + data);

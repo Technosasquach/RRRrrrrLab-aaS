@@ -4,13 +4,14 @@ const path = require("path");
 exports.childProcessSettings = {
     //pathToRootProcesses: "./../../../lib",
     //pathToRootProcesses: path.join(process.argv[1], "../"),
-    pathToExecutableProcess: "python",
-    pathToStore: path.join(process.argv[1], "../../store"),
-    pathToLogs: path.join(process.argv[1], "../../store/output"),
-    pathToRawCode: path.join(process.argv[1], "../../store/raw"),
+    pathToExecutableProcess: "java",
+    pathToStore: path.join(process.argv[1], "../../../storage"),
+    pathToLogs: path.join(process.argv[1], "../../../storage/output"),
+    pathToRawCode: path.join(process.argv[1], "../../../storage/raw"),
+    pathToPyCode: path.join(process.argv[1], "../../../storage/py"),
     fileOutSuffix: "-log",
     fileErrSuffix: "-err",
     outputFileTypeLog: ".rumlog",
-    outputFileTypeRLab: ".py"
+    outputFileTypeRLab: ".rum"
 };
 //# sourceMappingURL=childprocess.js.map

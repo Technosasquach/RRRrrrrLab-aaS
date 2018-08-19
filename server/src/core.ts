@@ -46,6 +46,7 @@ app.set("port", process.env.PORT || 3000);
 // Static content delivery compression
 app.use(compression());
 // URL/URI and HTTP content decoding and parsing
+// app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Cookie content decoding and parsing
@@ -86,6 +87,7 @@ app.use(logger("dev"));
 // });
 
 // Ugly mess to get static file routing working properly
+app.use("/storage/", express.static(path.join(__dirname, "./../../storage/")));
 app.use(express.static(path.join(__dirname, "./../../client/dist")));
 // app.use("/:a",          express.static(path.join(__dirname, "/../public")));
 // app.use("/:a/:b",       express.static(path.join(__dirname, "/../public")));

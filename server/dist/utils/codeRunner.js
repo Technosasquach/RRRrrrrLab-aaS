@@ -6,7 +6,6 @@ const childprocess_1 = require("./../config/childprocess");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
 const path = require("path");
-const uuid_1 = require("uuid");
 class CodeRunner {
     // Gets a command to run a file
     // Handles function creation and 
@@ -15,8 +14,10 @@ class CodeRunner {
         return new Promise((resolve, reject) => {
             try {
                 // Save file
-                const processUUID = uuid_1.v1();
-                const pathToFileName = childprocess_1.childProcessSettings.pathToRawCode + "/" + processUUID + childprocess_1.childProcessSettings.outputFileTypeRLab;
+                const processUUID = makeid();
+                const pathToFileName = childprocess_1.childProcessSettings.pathToRawCode + "/" +
+                    processUUID +
+                    childprocess_1.childProcessSettings.outputFileTypeRLab;
                 mkdirp(path.dirname(pathToFileName), (err) => {
                     if (err)
                         console.log(JSON.stringify(err));
@@ -32,9 +33,10 @@ class CodeRunner {
     }
     // Take a file and run it, and return a ICodeOutput object
     static execFileFunction(pathTofileName, processUUID) {
+        console.log("OUTPUT PATH NAME: " + pathTofileName);
         return new Promise((resolve, reject) => {
             try {
-                const uuid = processUUID || uuid_1.v1();
+                const uuid = processUUID || makeid();
                 new codeExecutor_1.CodeExecutor(pathTofileName, uuid).exec().then((result) => {
                     codeOutputExtracting_1.CodeOutputExtractor.parseOutput(result.outPath, uuid).then((result) => { resolve(result); }, (err) => {
                         resolve({ err: { type: "Output Processor", raw: err } });
@@ -50,4 +52,11 @@ class CodeRunner {
     ;
 }
 exports.CodeRunner = CodeRunner;
+function makeid() {
+    var text = "";
+    var possible = "123456789";
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
 //# sourceMappingURL=codeRunner.js.map

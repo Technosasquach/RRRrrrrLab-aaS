@@ -19,8 +19,12 @@ export class CodeRunner {
         return new Promise((resolve: Function, reject: Function) => {
             try {
                 // Save file
-                const processUUID = v1();
-                const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab;
+                const processUUID = makeid();
+                const pathToFileName = 
+                    childProcessSettings.pathToRawCode + "/" + 
+                    processUUID + 
+                    childProcessSettings.outputFileTypeRLab;
+                
                 mkdirp(path.dirname(pathToFileName), (err: any) => {
                     if (err) console.log(JSON.stringify(err));
                     fs.writeFileSync(pathToFileName, code)
@@ -39,9 +43,10 @@ export class CodeRunner {
 
     // Take a file and run it, and return a ICodeOutput object
     public static execFileFunction(pathTofileName: string, processUUID?: string): Promise<ICodeOutput> {
+        console.log("OUTPUT PATH NAME: " + pathTofileName);
         return new Promise((resolve: Function, reject: Function) => {
             try{
-                const uuid = processUUID || v1();
+                const uuid = processUUID || makeid();
                 new CodeExecutor(pathTofileName, uuid).exec().then(
                     (result: CodeProcess) => {
                         CodeOutputExtractor.parseOutput(result.outPath, uuid).then(
@@ -61,3 +66,13 @@ export class CodeRunner {
     };
 
 }
+
+function makeid() {
+    var text = "";
+    var possible = "123456789";
+  
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
+  }

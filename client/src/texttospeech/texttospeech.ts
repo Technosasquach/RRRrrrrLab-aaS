@@ -6,10 +6,11 @@ interface IWindow extends Window {
 }
 
 export class TextToSpeech {
-    spRek: any = undefined;
-    timeout_ms: number = 10000;
+    static spRek: any = undefined;
+    static timeout_ms: number = 10000;
 
     public static runSpeechToText(callback: Function) {
+        console.log("Started to resolve promise");
         // Get the SpeechRecogntion class
         //const {SpeechRecognition}: IWindow = <IWindow>window;
         const {webkitSpeechRecognition}: IWindow = <IWindow>window; // Chrome
@@ -28,7 +29,7 @@ export class TextToSpeech {
         //console.log(recognition);
         window.setTimeout(() => {
             recognition.stop()
-        }, timeout_ms);
+        }, this.timeout_ms);
 
         // Output Result
         recognition.onresult = ((event) => {

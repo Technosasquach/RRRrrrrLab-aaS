@@ -36,6 +36,7 @@ function mountAPIService(app) {
     app.get("/api/node/:id", function (req, res) {
     });
     app.post("/api/execText", (req, res) => {
+        console.log(req.body.code);
         codeRunner_1.CodeRunner.execFunction(req.body.code)
             .then((output) => {
             res.json(Object.assign({}, output, { date: Date.now() }));

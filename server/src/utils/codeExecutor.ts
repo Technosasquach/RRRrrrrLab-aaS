@@ -49,17 +49,23 @@ export class CodeExecutor {
     public exec() {
         return new Promise((resolve: Function, reject: Function) => {
             const command: string = childProcessSettings.pathToExecutableProcess
-            const args: string[] = [this.pathToFile];
+            const args: string[] = [
+                "-jar", 
+                "./rum_app.jar", 
+                this.processUUID, 
+                this.pathToFile, 
+                childProcessSettings.pathToPyCode + "/" + this.processUUID + ".py"];
             console.log("[Process " + this.processUUID + "] Starting Process");
             Io.emit('broadcast',{ msg: "[Process " + this.processUUID + "] Starting Process" });
             this.process = cprocess.spawn(
                 command,
                 args,
+                // [],
                 {
                     // Process spawn options
                     stdio: ['ignore', 'pipe', 'pipe']
                     // stdio: [ 'ignore', this.out, this.err ]
-                    //stdio: [ 'ignore', this.writeStream, this.writeStream ]
+                    // stdio: [ 'ignore', this.writeStream, this.writeStream ]
                 }
             );
 

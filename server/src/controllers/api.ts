@@ -48,6 +48,7 @@ export function mountAPIService(app: Express) {
     });
 
     app.post("/api/execText", (req: Request, res: Response) => {
+        console.log(req.body.code);
         CodeRunner.execFunction(req.body.code)
             .then((output: ICodeOutput) => {
                 res.json({
