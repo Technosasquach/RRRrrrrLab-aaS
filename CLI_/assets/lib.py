@@ -1,4 +1,5 @@
 from math import *
+from random import *
 from matplotlib.pyplot import *
 from matplotlib.image import *
 
@@ -79,4 +80,9 @@ def how_does_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
     out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
 
 def fire_ye_func():
-    fire_the_cannons_func(calc_angle, calc_vel, calc_grav)
+    fire_ye_cannons_func(calc_angle, calc_vel, calc_grav)
+
+def man_of_war_func(shots = 100):
+    for i in range(int(shots)):
+        fire_ye_cannons_func(uniform(10, 80), uniform(10, 100))
+    reveal_ye_plunder_func()
