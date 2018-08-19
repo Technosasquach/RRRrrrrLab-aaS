@@ -104,6 +104,10 @@ if (app.get("env") === "production") {
 import { mountAPIService } from "./controllers/api";
 mountAPIService(app);
 
+import { WebSocket } from "./controllers/websockets";
+export const WebSockets = new WebSocket(io);
+WebSockets.io.emit('broadcast',{ msg: "Im Alive!" });
+
 
 // The last route run
 import { Request, Response } from "express";
