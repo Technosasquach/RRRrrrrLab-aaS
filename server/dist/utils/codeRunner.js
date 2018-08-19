@@ -4,6 +4,8 @@ const codeExecutor_1 = require("./codeExecutor");
 const codeOutputExtracting_1 = require("./codeOutputExtracting");
 const childprocess_1 = require("./../config/childprocess");
 const fs = require("fs");
+const mkdirp = require("mkdirp");
+const path = require("path");
 const uuid_1 = require("uuid");
 class CodeRunner {
     // Gets a command to run a file
@@ -15,7 +17,11 @@ class CodeRunner {
                 // Save file
                 const processUUID = uuid_1.v1();
                 const pathToFileName = childprocess_1.childProcessSettings.pathToRawCode + "/" + processUUID + childprocess_1.childProcessSettings.outputFileTypeRLab;
-                fs.writeFileSync(pathToFileName, code);
+                mkdirp(path.dirname(pathToFileName), (err) => {
+                    if (err)
+                        console.log(err);
+                    fs.writeFileSync(pathToFileName, code);
+                });
                 // Execute on file
                 this.execFileFunction(pathToFileName, processUUID).then((result) => { resolve(result); }, (err) => { reject(err); });
             }

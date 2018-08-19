@@ -1,6 +1,9 @@
 
 
 import { Request, Response, NextFunction, Express } from "express";
+import { CodeRunner } from "../utils/codeRunner";
+import { ICodeOutput } from "../utils/ICodeOutput";
+import { ICodeInput, ICodeInputFile, ICodeInputText } from "../interfaces/ICodeInput";
 
 export function mountAPIService(app: Express) {
 
@@ -43,5 +46,57 @@ export function mountAPIService(app: Express) {
     app.get("/api/node/:id", function(req: Request, res: Response) {
         
     });
+
+    app.post("/api/execText", (req: Request, res: Response) => {
+        CodeRunner.execFunction(req.body.code)
+            .then((output: ICodeOutput) => {
+                res.json({
+                    ...output,
+                    date: Date.now()
+                })
+            })
+            .catch((output: ICodeOutput) => {
+                if(output) {
+                    res.json({
+                        ...output,
+                        date: Date.now()
+                    })
+                } else {
+                    res.json({
+                        err: {
+                            type: "execText API Error",
+                            raw: "Major top level error in API"
+                        },
+                        date: Date.now()
+                    })
+                }
+            })
+    })
+
+    app.post("/api/execFile", (req: Request, res: Response) => {
+        CodeRunner.execFileFunction(req.body.codePath)
+            .then((output: ICodeOutput) => {
+                res.json({
+                    ...output,
+                    date: Date.now()
+                })
+            })
+            .catch((output: ICodeOutput) => {
+                if(output) {
+                    res.json({
+                        ...output,
+                        date: Date.now()
+                    })
+                } else {
+                    res.json({
+                        err: {
+                            type: "execFile API Error",
+                            raw: "Major top level error in API"
+                        },
+                        date: Date.now()
+                    })
+                }
+            })
+    })
 
 }
