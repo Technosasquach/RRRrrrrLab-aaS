@@ -2,6 +2,9 @@ from math import *
 from random import *
 from matplotlib.pyplot import *
 from matplotlib.image import *
+import imageio
+
+xkcd()
 
 process = 0
 image_id = 0
@@ -22,7 +25,7 @@ def out_text(value):
 def out_graph(func, min, max):
     x = []
     y = []
-    detail = 1000
+    detail = 320
     for i in range(detail):
         v = i / detail * (max - min) + min
         x.append(v)
@@ -33,6 +36,15 @@ def out_image(name, x, y, width, height):
     hw = width / 2
     hh = height / 2
     imshow(imread("assets/" + name + ".png"), extent = (x - hw, x + hw, y - hh, y + hh))
+
+def out_final(size):
+    out_image("ship", 0, 0, 2, 1)
+    axis(size)
+    file = "storage/" + str(process) + "-" + "temp.png"
+    savefig(file)
+    close()
+    data = imread(file)
+    return data
 
 def func():
     pass
@@ -53,11 +65,8 @@ def where_be_ye_func():
 
 def reveal_ye_plunder_func():
     global image_id
-    out_image("ship", 0, 0, 2, 1)
-    axis("scaled")
     file = "storage/" + str(process) + "-" + str(image_id) + ".png"
-    savefig(file)
-    close()
+    imsave(file, out_final("scaled"))
     print("<<<graph:" + file + ">>>")
     image_id = image_id + 1
 
@@ -100,3 +109,31 @@ def man_of_war_func(shots = 100):
     for i in range(int(shots)):
         fire_ye_cannons_func(uniform(10, 80), uniform(10, 100))
     reveal_ye_plunder_func()
+
+def watch_ye_cannons_func(angle = 45, velocity = 10, gravity = 9.8):
+    global image_id
+    file = "storage/" + str(process) + "-" + str(image_id) + ".gif"
+    writer = imageio.get_writer(file, mode = "I")
+
+    global last_dist
+    angle = radians(angle)
+    vx = cos(angle) * velocity
+    vy = sin(angle) * velocity
+    g = -gravity
+    max = -((2*vx*vy)/g)
+    callback = lambda x : (g*(x**2))/(2*(vx**2)) + (vy*x)/vx
+
+    out_graph(callback, 0, max)
+    out_image("ship", 0, 0, 2, 1)
+    axis("scaled")
+    size = axis()
+    close()
+
+    steps = 10
+    for i in range(steps):
+        out_graph(callback, 0, i / steps * max)
+        writer.append_data(out_final(size))
+    writer.close()
+
+    print("<<<graph:" + file + ">>>")
+    image_id = image_id + 1
