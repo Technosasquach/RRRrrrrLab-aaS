@@ -1,0 +1,58 @@
+@import "./../../variables.less";
+
+@monitor-height: 150px;
+
+.processMonitorHideShow {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 2rem;
+    background-color: lighten(@colour-dark, 10%);
+
+    &:hover {
+        background-color: lighten(@colour-dark, 20%);
+    }
+}
+
+.processMonitor {
+    height: @monitor-height;
+    width: 100%;
+    background-color: lighten(@colour-dark, 10%);
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border-top: lighten(black, 30%) solid 2px;
+    color: white;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    -webkit-box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+    box-shadow: inset 0px -5px 40px -9px rgba(0,0,0,0.75);
+
+    span {
+        display: block;
+        line-height: 17px;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+    }
+
+    #termText {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+
+        span {
+            display: block;
+            line-height: 20px;
+            padding: 1rem;
+        }
+    }
+}
