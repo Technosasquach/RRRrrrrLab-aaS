@@ -69,15 +69,29 @@ def does_ye_hit_func(distance = 10):
     else:
         out_text("SHIVER ME TIMBERS, WE MISSED")
 
-def how_does_ye_fire_func(angle = 45, distance = 10, gravity = 9.8):
+def how_does_ye_fire_func(velocity = 10, distance = 10, gravity = 9.8):
     global calc_angle, calc_vel, calc_grav
-    calc_angle = angle
+    calc_vel = velocity
     calc_grav = gravity
-    angle = radians(angle)
     g = gravity
     d = distance
-    calc_vel = sqrt((g*d)/(2*sin(angle)*cos(angle)))
-    out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
+    v = calc_vel
+    k = (d*g)/(v**2)
+    if (k > 1):
+        calc_angle = 45
+        out_text("YE TOO FAR AWAY!")
+    else:
+        calc_angle = degrees(asin(k)/2)
+        out_text("Required angle: " + str(int(calc_angle)))
+
+    #global calc_angle, calc_vel, calc_grav
+    #calc_angle = angle
+    #calc_grav = gravity
+    #angle = radians(angle)
+    #g = gravity
+    #d = distance
+    #calc_vel = sqrt((g*d)/(2*sin(angle)*cos(angle)))
+    #out_text("Required Velocity: " + str(int(calc_vel)) + " m/s")
 
 def fire_ye_func():
     fire_ye_cannons_func(calc_angle, calc_vel, calc_grav)
