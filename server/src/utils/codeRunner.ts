@@ -5,6 +5,8 @@ import { ICodeOutput, CodeProcess } from "./ICodeOutput";
 import { childProcessSettings } from "./../config/childprocess";
 
 import * as fs from "fs";
+import * as mkdirp from "mkdirp";
+import * as path from "path";
 import { v1 } from "uuid";
 
 export class CodeRunner {
@@ -18,8 +20,12 @@ export class CodeRunner {
             try {
                 // Save file
                 const processUUID = v1();
-                const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab
-                fs.writeFileSync(pathToFileName, code);
+                const pathToFileName = childProcessSettings.pathToRawCode + "/" + processUUID + childProcessSettings.outputFileTypeRLab;
+                mkdirp(path.dirname(pathToFileName), (err: any) => {
+                    if (err) console.log(JSON.stringify(err));
+                    fs.writeFileSync(pathToFileName, code)
+                });
+                
                 // Execute on file
                 this.execFileFunction(pathToFileName, processUUID).then(
                     (result: ICodeOutput) => { resolve(result); },

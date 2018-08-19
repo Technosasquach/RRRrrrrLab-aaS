@@ -8,7 +8,6 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 export const Server = server;
 
-
 // Dependencies
 // ----------------------------------------------------------------------------
 import * as mongoose from "mongoose";
@@ -31,7 +30,7 @@ import * as path from "path";
 
 // MongooseDB
 // ----------------------------------------------------------------------------
-mongoose.connect("mongodb://localhost:27017/above22water");
+//mongoose.connect("mongodb://localhost:27017/above22water");
 mongoose.connection.on("error", () => {
     console.log("MongoDB connection error. Please make sure MongoDB is running.");
     process.exit();
@@ -52,20 +51,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cookie content decoding and parsing
 app.use(cookieParser());
 // Mounts the session store with an auto loader into MongooseDB
-const MongoStore = require("connect-mongo")(session);
+//const MongoStore = require("connect-mongo")(session);
 // Allows the session storage to be put into mongoose
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: "rrrrrlabsessionsecret",
-    store: new MongoStore({
-        host: "127.0.0.1",
-        port: "27017",
-        db: "session",
-        url: "mongodb://localhost:27017/rrrrrlab",
-        autoReconnect: true
-    })
-}));
+// app.use(session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: "rrrrrlabsessionsecret",
+//     store: new MongoStore({
+//         host: "127.0.0.1",
+//         port: "27017",
+//         db: "session",
+//         url: "mongodb://localhost:27017/rrrrrlab",
+//         autoReconnect: true
+//     })
+// }));
 // Starts the user account session
 // import { mountPassportLoginService } from "./config/passport";
 // mountPassportLoginService(passport);
@@ -87,7 +86,7 @@ app.use(logger("dev"));
 // });
 
 // Ugly mess to get static file routing working properly
-app.use(express.static(path.join(__dirname, "/../public")));
+app.use(express.static(path.join(__dirname, "./../../client/dist")));
 // app.use("/:a",          express.static(path.join(__dirname, "/../public")));
 // app.use("/:a/:b",       express.static(path.join(__dirname, "/../public")));
 // app.use("/:a/:b/:c",    express.static(path.join(__dirname, "/../public")));
@@ -96,7 +95,7 @@ app.use(express.static(path.join(__dirname, "/../public")));
 // Prod vs Dev code and display
 if (app.get("env") === "production") {
     app.set("trust proxy", 1); // trust first proxy
-} 
+}
 // else {
 //     app.locals.pretty = true;
 // }
@@ -107,7 +106,12 @@ mountAPIService(app);
 
 
 // The last route run
-// import { Request, Response } from "express";
-// app.get("*", (req: Request, res: Response) => {
-//     res.sendFile(path.resolve(__dirname, "./../../../client/dist/index.html"));
-// });
+import { Request, Response } from "express";
+
+app.get("/", (req: Request, res: Response) => {
+    res.sendFile(path.resolve(__dirname, "./../../client/index.html"));
+});
+
+// app.get("/bundle.js", (req: Request, res: Response) => {
+//     res.sendFile(path.resolve(__dirname, "./../../client/dist/bundle.js"))
+// })

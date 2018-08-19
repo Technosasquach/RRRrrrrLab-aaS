@@ -18,7 +18,6 @@ const mongoose = require("mongoose");
 // ----------------------------------------------------------------------------
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const bodyParser = require("body-parser");
 const errorHandler = require("errorhandler");
 const logger = require("morgan");
@@ -27,7 +26,7 @@ const path = require("path");
 // const flash = require("connect-flash");
 // MongooseDB
 // ----------------------------------------------------------------------------
-mongoose.connect("mongodb://localhost:27017/above22water");
+//mongoose.connect("mongodb://localhost:27017/above22water");
 mongoose.connection.on("error", () => {
     console.log("MongoDB connection error. Please make sure MongoDB is running.");
     process.exit();
@@ -47,20 +46,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cookie content decoding and parsing
 app.use(cookieParser());
 // Mounts the session store with an auto loader into MongooseDB
-const MongoStore = require("connect-mongo")(session);
+//const MongoStore = require("connect-mongo")(session);
 // Allows the session storage to be put into mongoose
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: "rrrrrlabsessionsecret",
-    store: new MongoStore({
-        host: "127.0.0.1",
-        port: "27017",
-        db: "session",
-        url: "mongodb://localhost:27017/rrrrrlab",
-        autoReconnect: true
-    })
-}));
+// app.use(session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: "rrrrrlabsessionsecret",
+//     store: new MongoStore({
+//         host: "127.0.0.1",
+//         port: "27017",
+//         db: "session",
+//         url: "mongodb://localhost:27017/rrrrrlab",
+//         autoReconnect: true
+//     })
+// }));
 // Starts the user account session
 // import { mountPassportLoginService } from "./config/passport";
 // mountPassportLoginService(passport);
@@ -80,7 +79,7 @@ app.use(logger("dev"));
 //     next();
 // });
 // Ugly mess to get static file routing working properly
-app.use(express.static(path.join(__dirname, "/../public")));
+app.use(express.static(path.join(__dirname, "./../../client/dist")));
 // app.use("/:a",          express.static(path.join(__dirname, "/../public")));
 // app.use("/:a/:b",       express.static(path.join(__dirname, "/../public")));
 // app.use("/:a/:b/:c",    express.static(path.join(__dirname, "/../public")));
@@ -94,9 +93,10 @@ if (app.get("env") === "production") {
 // }
 const api_1 = require("./controllers/api");
 api_1.mountAPIService(app);
-// The last route run
-// import { Request, Response } from "express";
-// app.get("*", (req: Request, res: Response) => {
-//     res.sendFile(path.resolve(__dirname, "./../../../client/dist/index.html"));
-// });
+app.get("/", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "./../../client/index.html"));
+});
+// app.get("/bundle.js", (req: Request, res: Response) => {
+//     res.sendFile(path.resolve(__dirname, "./../../client/dist/bundle.js"))
+// })
 //# sourceMappingURL=core.js.map

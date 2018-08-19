@@ -32,6 +32,7 @@ class CodeOutputExtractor {
         let foundTypes = [];
         codeOutput_1.codeOutputs.forEach((testable) => {
             const foundText = lookUp.match(testable.regex);
+            //THIS IS PURPOSEFULLY BROKEN
             if (foundText.length > 0) {
                 // Will have found a match
                 foundTypes.push({
