@@ -29,6 +29,7 @@ public class Lexer {
         alias.put("you", "");
         alias.put("your", "ye");
 
+        alias.put("o'", "of");
         alias.put("do", "does");
         alias.put("shoot", "fire");
     }
